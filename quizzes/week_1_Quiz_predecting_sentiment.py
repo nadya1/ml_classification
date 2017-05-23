@@ -10,7 +10,7 @@ def predict_scores_simple_data(model, test_data):
 	"""Predict scores in simple test-inputs (test_data[10:13])"""
 	sample_test_data = test_data[10:13]
 	scores = model.predict(sample_test_data,output_type='margin')
-	my_predictions = np_utils.probability_predictions(scores)
+	my_predictions = np_utils.sigmoid_function(scores)
 	# print '\nScores: (output_type=margin) %s'%scores
 	# print 'Scores: (output_type=probability) %s'%model.predict(sample_test_data, output_type='probability')
 	# print "My predictions: %s" % my_predictions
