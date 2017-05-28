@@ -240,8 +240,7 @@ def main():
 		quiz3_logistic_regression_l2_penalty(products,important_words,lg_class)
 
 	except Exception as details:
-		print "Error >> %s" % details
-		traceback.print_exc()
+		print (">> Exit or Errors \n%s, %s"%(details, traceback.print_exc()))
 
 if __name__ == "__main__":
 	main()

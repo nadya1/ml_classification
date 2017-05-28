@@ -124,8 +124,7 @@ def main():
 		print "\nQ11: Accuracy of the majority class classifier model: %s" % (accuracy_majority)
 
 	except Exception as details:
-		print "Error >> %s" % details
-		traceback.print_exc()
+		print (">> Exit or Errors \n%s, %s"%(details, traceback.print_exc()))
 
 if __name__ == "__main__":
 	main()
