@@ -15,7 +15,7 @@ def quiz1_identify_safe_loans(loans, target):
 	features = select_features()
 	loans = loans[features + [target]]
 
-	loans_data = sample_data_to_balance_classes(loans,target)
+	loans_data = gp.subsample_dataset_to_balance_classes(loans,target)
 	train_data,validation_data = loans_data.random_split(.8,seed=1)
 
 
@@ -76,27 +76,6 @@ def select_features():
 		]
 	return features
 
-def sample_data_to_balance_classes(loans, target):
-	"""Sample data to balance classes"""
-	safe_loans_raw = loans[loans[target] == +1]
-	risky_loans_raw = loans[loans[target] == -1]
-	n_data = float(loans.num_rows())
-	# print "Number of safe loans  : %s" % len(safe_loans_raw)
-	# print "Number of risky loans : %s" % len(risky_loans_raw)
-	# print "Percentage of safe loans  :",(len(safe_loans_raw) / n_data) * 100
-	# print "Percentage of risky loans :",(len(risky_loans_raw) / n_data) * 100
-	# Since there are fewer risky loans than safe loans, find the ratio of the sizes
-	# and use that percentage to undersample the safe loans.
-	percentage = len(risky_loans_raw) / float(len(safe_loans_raw))
-	# print percentage
-	risky_loans = risky_loans_raw
-	safe_loans = safe_loans_raw.sample(percentage,seed=1)
-
-	# Append the risky_loans with the downsampled version of safe_loans
-	loans_data = risky_loans.append(safe_loans)
-
-	return loans_data
-
 def get_simple_val_data(validation_data, target):
 	validation_safe_loans = validation_data[validation_data[target] == 1]
 	validation_risky_loans = validation_data[validation_data[target] == -1]
@@ -123,9 +102,9 @@ def select_small_features():
 def quiz2_buildng_decision_tree(loans, target):
 	small_features = select_small_features()
 	loans_small = loans[small_features + [target]]
-	loans_data = sample_data_to_balance_classes(loans_small,target)
+	loans_data = gp.subsample_dataset_to_balance_classes(loans_small,target)
 
-	loans_data = gp.unpack_features(loans_data,small_features)
+	loans_data = gp.transform_categorical_into_bin_features(loans_data,small_features)
 
 	features = loans_data.column_names()
 	features.remove('safe_loans')  # Remove the response variable
@@ -171,7 +150,7 @@ def main():
 		# Extract the feature columns and target column
 		target = 'safe_loans' # prediction target (y) (+1 means safe, -1 is risky)
 
-		# quiz1_identify_safe_loans(loans,target)
+		quiz1_identify_safe_loans(loans,target)
 
 		quiz2_buildng_decision_tree(loans,target)
 
