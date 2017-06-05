@@ -4,7 +4,6 @@ __date__ = '05/24/2017'
 import ml_graphlab_utils as gp
 import ml_classification_utils as cl_utils
 import ml_numpy_utils as np_utils
-import matplotlib.pyplot as plt
 import traceback
 
 #==================================================================

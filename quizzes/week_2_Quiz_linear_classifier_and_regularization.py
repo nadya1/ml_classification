@@ -4,7 +4,7 @@ __date__ = '05/21/2017'
 import ml_graphlab_utils as gp
 import ml_classification_utils as cl_utils
 import ml_numpy_utils as np_utils
-import matplotlib.pyplot as plt
+import ml_plotting_utils as np_plot 
 import traceback
 
 def quiz2_theory():
@@ -127,7 +127,8 @@ def quiz3_logistic_regression_l2_penalty(products,important_words, lg_class):
 	print "\nQ3: words is not listed in either positive_words or negative_words: QUALITY"
 
 	l2_penalty_list = [0, 4, 10, 1e2, 1e3, 1e5]
-	make_coefficient_plot(table,positive_words,negative_words,l2_penalty_list)
+	output_file = '../graphs/Coefficient_vs_L2penalty.png'
+	np_plot.make_coefficient_plot(table,positive_words,negative_words,l2_penalty_list,output_file)
 	print "\nQ4: All coefficients consistently get smaller in size as the L2 penalty is increased -> TRUE"
 	train_accuracy = create_accuracy_table(table,feature_matrix_train,sentiment_train)
 	validation_accuracy = create_accuracy_table(table,feature_matrix_valid,sentiment_valid)
@@ -136,8 +137,8 @@ def quiz3_logistic_regression_l2_penalty(products,important_words, lg_class):
 		print "\tL2 penalty = %g" % key
 		print "\ttrain accuracy = %s, validation_accuracy = %s" % (train_accuracy[key], validation_accuracy[key])
 		print "\t--------------------------------------------------------------------------------"
-
-	make_classsification_accuracy_plot(train_accuracy,validation_accuracy)
+	output_file2 = '../graphs/Classification_Accuracy_vs_L2penalty.png'
+	np_plot.make_classsification_accuracy_plot(train_accuracy,validation_accuracy,output_file2)
 
 	print "\nQ6: highest accuracy on the training data: L2 penalty = 0"
 	print "\nQ7: highest accuracy on the validation data: L2 penalty = 4"
@@ -154,58 +155,6 @@ def get_table_with_logistic_model(lg_class, important_words, feature_matrix_trai
 															  l2_penalty=l2_penalty, max_iter=501, check_likelihood=False)
 		table['coefficients [%s]'%name] = coefficients
 	return table
-
-def make_coefficient_plot(table,positive_words,negative_words,l2_penalty_list):
-	plt.rcParams['figure.figsize'] = 10,6
-
-	cmap_positive = plt.get_cmap('Reds')
-	cmap_negative = plt.get_cmap('Blues')
-
-	xx = l2_penalty_list
-	plt.plot(xx,[0.] * len(xx),'--',lw=1,color='k')
-
-	table_positive_words = table.filter_by(column_name='word',values=positive_words)
-	table_negative_words = table.filter_by(column_name='word',values=negative_words)
-	del table_positive_words['word']
-	del table_negative_words['word']
-
-	for i in xrange(len(positive_words)):
-		color = cmap_positive(0.8 * ((i + 1) / (len(positive_words) * 1.2) + 0.15))
-		plt.plot(xx,table_positive_words[i:i + 1].to_numpy().flatten(),'-',label=positive_words[i],linewidth=4.0,
-			color=color)
-
-	for i in xrange(len(negative_words)):
-		color = cmap_negative(0.8 * ((i + 1) / (len(negative_words) * 1.2) + 0.15))
-		plt.plot(xx,table_negative_words[i:i + 1].to_numpy().flatten(),'-',label=negative_words[i],linewidth=4.0,
-			color=color)
-
-	plt.legend(loc='best',ncol=3,prop={'size':16},columnspacing=0.5)
-	plt.axis([1,1e5,-1,2])
-	plt.title('Coefficient path for 5 (positive & negative) words')
-	plt.xlabel('L2 penalty ($\lambda$)')
-	plt.ylabel('Coefficient value')
-	plt.xscale('log')
-	plt.rcParams.update({'font.size':18})
-	plt.tight_layout()
-	plt.savefig('../graphs/Coefficient_vs_L2penalty')
-	plt.close()
-
-def make_classsification_accuracy_plot(train_accuracy,validation_accuracy):
-	plt.rcParams['figure.figsize'] = 10,6
-	sorted_list = sorted(train_accuracy.items(),key=lambda x:x[0])
-	plt.plot([p[0] for p in sorted_list],[p[1] for p in sorted_list],'bo-',linewidth=4,label='Training accuracy')
-	sorted_list = sorted(validation_accuracy.items(),key=lambda x:x[0])
-	plt.plot([p[0] for p in sorted_list],[p[1] for p in sorted_list],'ro-',linewidth=4,label='Validation accuracy')
-	plt.xscale('symlog')
-	plt.axis([0,1e3,0.78,0.786])
-	plt.legend(loc='lower left')
-	plt.title('Classification Accuracy vs L2 penalty')
-	plt.xlabel('L2 penalty ($\lambda$)')
-	plt.ylabel('Classification Accuracy')
-	plt.rcParams.update({'font.size':18})
-	plt.tight_layout()
-	plt.savefig('../graphs/Classification_Accuracy_vs_L2penalty')
-	plt.close()
 
 def create_accuracy_table(table, feature_matrix,sentiment):
 	table_accuracy = {}
