@@ -6,7 +6,7 @@ import ml_classification_utils as cl_utils
 import ml_numpy_utils as np_utils
 import ml_plotting_utils as np_plot 
 import traceback
- 
+
 #==================================================================
 #              Quiz-1: Early Stop (decision tree)
 #==================================================================
@@ -39,7 +39,7 @@ def quiz1_boosting_trees(loans, target):
 	prob_model = model_5.predict(validation_data,output_type='probability')
 	# print prob_model
 	validation_data['predictions'] = prob_model
-	
+
 	safe_loans_probability = validation_data[validation_data['safe_loans'] == 1]
 	top5_grades = safe_loans_probability.topk('predictions',k=5,reverse=False)['grade']
 	top5_prob = safe_loans_probability.topk('predictions',k=5,reverse=False)['predictions']
@@ -66,7 +66,7 @@ def quiz1_boosting_trees(loans, target):
 	print "\nQ11: FALSE, it is not always true validation error will reduce as the number of trees increases"
 	output_file = '../graphs/TrainErrors_vs_ValErrors.png'
 	np_plot.make_train_error_vs_val_error_trees_plot(training_errors, validation_errors, output_file)
-	
+
 def small_val_data(validation_data, target):
 	# Select all positive and negative examples.
 	validation_safe_loans = validation_data[validation_data[target] == 1]
@@ -136,6 +136,10 @@ def mini_test_split(ada,train_data, features, target):
 		print 'Test failed... try again!'
 
 def quiz2_adaboosting_trees(loans, target, verbose=False):
+	print "\n**************************************"
+	print "*          Ada-Boosting Trees        *"
+	print "**************************************\n"
+
 	ada = cl_utils.AdaBoost()
 	features = select_small_features()
 	loans,loans_with_na = loans[[target] + features].dropna_split()
@@ -168,7 +172,7 @@ def quiz2_adaboosting_trees(loans, target, verbose=False):
 	predictions = ada.predict_adaboost(stump_weights, tree_stumps, test_data)
 	# accuracy = gp.graphlab.evaluation.accuracy(test_data[target], predictions)
 	print "\nQ3: component weights monotonically decreasing, monotonically increasing, or neither: NEITHER"
-	print "\t: %s" % stump_weights
+	print "\t: %s" %  stump_weights
 	stump_weights,tree_stumps = ada.adaboost_with_tree_stumps(train_data,features,target,num_tree_stumps=30,verbose=verbose)
 	print "\nQ4: Training error goes down in general, with some ups and downs in the middle."
 	error_all = []
@@ -206,7 +210,7 @@ def main():
 		# Extract the feature columns and target column
 		target = 'safe_loans' # prediction target (y) (+1 means safe, -1 is risky)
 
-		# quiz1_boosting_trees(loans,target)
+		quiz1_boosting_trees(loans,target)
 		quiz2_adaboosting_trees(loans,target)
 
 	except Exception as details:
