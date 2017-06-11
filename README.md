@@ -1,6 +1,6 @@
 ## Machine Learning: Classification
 
- - Coursera: https://goo.gl/9Q0jQO
+ - Coursera: https://goo.gl/YjJLO0
  - Created by: University of Washington
  - Taught by: Emily Fox & Carlos Guestrin
  
