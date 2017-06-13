@@ -22,7 +22,8 @@
 
  - cd ml_classification/notebooks
  - All weekly summary & assignments from: [week_1 to week_7](https://gitlab.com/nadyaK/ml_classification/tree/master/notebooks)
- - 
+ 
+
 ## Python Quizzes
 
  - cd ml_classification/quizzes
