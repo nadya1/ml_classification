@@ -1,6 +1,6 @@
 ## Machine Learning: Classification
 
- - Coursera: https://goo.gl/9Q0jQO
+ - Coursera: [ML-Classification](https://goo.gl/9Q0jQO)
  - Created by: University of Washington
  - Taught by: Emily Fox & Carlos Guestrin
  
@@ -21,9 +21,9 @@
 ## iPython Notebooks
 
  - cd ml_classification/notebooks
- - All weekly summary & assignments from week_1 to week_7 
-
+ - All weekly summary & assignments from: [week_1 to week_7](https://gitlab.com/nadyaK/ml_classification/tree/master/notebooks)
+ - 
 ## Python Quizzes
 
  - cd ml_classification/quizzes
- - All weekly quizzes.py from week_1 to week_7
+ - All weekly quizzes.py from: [week_1 to week_7](https://gitlab.com/nadyaK/ml_classification/tree/master/quizzes)
